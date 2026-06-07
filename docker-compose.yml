@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: 2024 Gerald Wiese <wiese@gnuhealth.org>
+# SPDX-FileCopyrightText: 2024 Leibniz University Hannover
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+services:
+  db:
+    image: postgres:16.2
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./db-log:/var/log/postgresql
+    environment:
+      POSTGRES_USER: "gnuhealth"
+      POSTGRES_PASSWORD: "gnusolidario"
+      POSTGRES_DB: "health"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U gnuhealth -d health" ]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+
+  app:
+    build: ./gnuhealth
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - app-data:/opt/gnuhealth/var/lib
+      - ./app-log:/opt/gnuhealth/var/log
+  web:
+    image: nginx:1.25.4
+    depends_on:
+      - db
+      - app
+    ports:
+      - "8090:80"
+      #- 8443:443
+    volumes:
+      - ./web-site:/etc/nginx/conf.d
+      - ./web-log:/var/log/nginx
+
+volumes:
+  db-data:
+  app-data:

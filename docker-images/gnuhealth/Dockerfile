@@ -16,9 +16,12 @@ USER gnuhealth
 WORKDIR /home/gnuhealth
 RUN wget -qO- https://ftp.gnu.org/gnu/health/gnuhealth-latest.tar.gz | tar -xzvf -
 
-WORKDIR /home/gnuhealth/gnuhealth-4.4.1
-RUN wget -qO- https://ftp.gnu.org/gnu/health/gnuhealth-setup-latest.tar.gz | tar -xzvf -
-RUN bash ./gnuhealth-setup install
+# GNU Health 4.4+ stores modules under his/tryton/; gnuhealth-setup expects health* at the root.
+RUN GH_DIR=$(ls -d gnuhealth-* | head -1) && \
+    cd "/home/gnuhealth/${GH_DIR}" && \
+    for mod in his/tryton/health*; do ln -sf "${mod}" "$(basename "${mod}")"; done && \
+    wget -qO- https://ftp.gnu.org/gnu/health/gnuhealth-setup-latest.tar.gz | tar -xzvf - && \
+    bash ./gnuhealth-setup install
 
 # Write gnuhealth configuration file
 RUN echo "[database]\n\
@@ -29,7 +32,7 @@ listen = *:${GNUHEALTH_SAO_PORT}\n\
 root=/home/gnuhealth/sao\n\
 \n\
 [webdav]\n\
-listen = *:${GNUHEALTH_WEBDAV_PORT}\n\
+listen = *:${GNUHEALTH_WEBDEV_PORT}\n\
 ssl_webdav = False\n" > /home/gnuhealth/gnuhealth/tryton/server/config/trytond.conf
 
 # Install sao
@@ -56,7 +59,7 @@ module=fhir_uwsgi:app\n\
 logto = /tmp/fhir_server.log\n" > /home/gnuhealth/.local/lib/python3.11/site-packages/fhir_server/server_uwsgi.ini
 
 EXPOSE ${GNUHEALTH_SAO_PORT}
-EXPOSE ${GNUHEALTH_WEBDAV_PORT}
+EXPOSE ${GNUHEALTH_WEBDEV_PORT}
 EXPOSE ${GNUHEALTH_FHIR_PORT}
 
 # Define environment variable

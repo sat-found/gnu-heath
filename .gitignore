@@ -1,0 +1,4 @@
+db-log/
+app-log/
+web-log/
+.env.local

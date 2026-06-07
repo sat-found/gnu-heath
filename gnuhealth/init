@@ -1,0 +1,19 @@
+#!/usr/bin/expect -f
+
+# SPDX-FileCopyrightText: 2024 Gerald Wiese <wiese@gnuhealth.org>
+# SPDX-FileCopyrightText: 2024 Leibniz University Hannover
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# get params
+set ADMIN_MAIL [lindex $argv 0]
+set ADMIN_PW [lindex $argv 1]
+set DB_NAME [lindex $argv 2]
+
+set timeout -1
+spawn trytond-admin -c /opt/gnuhealth/etc/trytond.conf -d "$DB_NAME" --email "$ADMIN_MAIL" --all --password
+expect -exact "\"admin\" password for \"$DB_NAME\":"
+send -- "$ADMIN_PW\r"
+expect -exact "\"admin\" password confirmation:"
+send -- "$ADMIN_PW\r"
+expect eof

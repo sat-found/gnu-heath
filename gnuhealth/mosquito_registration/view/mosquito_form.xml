@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<form>
+    <group string="Trap Info" id="trap_info">
+        <group colspan="4" id="trap_info">
+            <label name="trap_id"/>
+            <field name="trap_id" width="1"/>
+            <label name="location"/>
+            <field name="location" width="1"/>
+            <label name="latitude"/>
+            <field name="latitude"/>
+            <label name="longitude"/>
+            <field name="longitude"/>
+            <label name="altitude"/>
+            <field name="altitude"/>
+        </group>
+        <newline/>
+        <group id="Mosquitoe_info" string="Sample Info">
+            <label name="observer"/> 
+            <field name="observer"/> 
+            <label name="observation_date"/>
+            <field name="observation_date"/>
+            <label name="sample_id"/>
+            <field name="sample_id"/>
+            <separator name="comment" colspan="4"/>
+            <field name="comment" colspan="4" width="4" height="2"/>
+        </group>
+        <newline/>
+        <group id="Lab_info" string="Laboratory Info">
+            <label name="species"/>
+            <field name="species"/> 
+            <label name="number_per_species"/>
+            <field name="number_per_species"/>
+            <label name="life_stage"/>
+            <field name="life_stage"/>
+            <label name="num_male"/>
+            <field name="num_male"/>
+            <label name="num_female"/>
+            <field name="num_female"/>
+            <label name="id_method"/>
+            <field name="id_method"/>
+       </group>
+        
+            
+    </group>
+</form>

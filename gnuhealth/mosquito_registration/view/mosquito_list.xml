@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+
+<tree>
+    <field name="species"/>
+    <field name="location"/>
+    <field name="observation_date"/>
+    <field name="observer"/>
+    <field name="latitude"/>
+    <field name="longitude"/>
+    <field name="altitude"/>
+    <field name="number_per_species"/>
+    <field name="trap_id"/>
+    <field name="sample_id"/>
+    <field name="life_stage"/>
+    <field name="num_male"/>
+    <field name="num_female"/>
+    <field name="id_method"/>
+    
+</tree>
